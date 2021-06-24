@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'exam/style.css' %}">
+    <title>Home</title>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="header">
+            <h2>Hello {{users_info.first_name}}! </h2>
+            <a href="/wishes/logout">Log Out</a>
+            <form action="/wishes/stats" method="POST">
+                {% csrf_token %}
+                <button class="btn btn-outline-dark">View Stats</button>
+            </form>
+            <form action="/wishes/new" method="POST">
+                {% csrf_token %}
+                <button class="btn btn-outline-primary">Make a Wish!</button>
+            </form>
+        </div>
+        <h5>Your wish list:</h5>
+        <table class="table table-bordered table-striped table-dark">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Date Added</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for wish in all_wishes %}
+                {% if users_info.id == wish.uploaded_by.id and wish.granted_at == None %}
+                <tr>
+                    <td>{{wish.title}}</td>
+                    <td>{{wish.created_at}}</td>
+                    <td>
+                        <form action="/wishes/delete/{{wish.id}}" method="POST">
+                            {% csrf_token%}
+                            <button>Remove</button>
+                        </form>
+                        <form action="/wishes/edit/{{wish.id}}" method="POST">
+                            {% csrf_token %}
+                            <button>Edit</button> 
+                        </form>
+                        <form action="/wishes/granted/{{wish.id}}" method="POST">
+                            {% csrf_token %}
+                            <button>Granted!</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+        <h5>Granted Wishes:</h5>
+        <table class="table table-bordered table-striped table-dark">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Wisher</th>
+                    <th>Date Added</th>
+                    <th>Date Granted</th>
+                    <th>Likes</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for wish in all_wishes %}
+                {% if wish.granted_at != None %}
+                <tr>
+                    <td>{{wish.title}}</td>
+                    <td>{{wish.uploaded_by.first_name}} {{wish.uploaded_by.last_name}}</td>
+                    <td>{{wish.created_at}}</td>
+                    <td>{{wish.granted_at}}</td>
+                    <td>{{wish.users_who_like.count}}</td>
+                    {% if wish.uploaded_by.id != users_info.id %}
+                    <td>
+                        <a href="/wishes/like/{{wish.id}}">Like</a>
+                    </td>
+                        
+                    {% endif %}
+                </tr>
+                {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

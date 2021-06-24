@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'exam/new.css' %}">
+    <title>Edit Wish</title>
+</head>
+<body>
+    <div class="header">
+        <h2>Hello {{users_info.first_name}}! Let's edit your wish!</h2>
+        <a href="/wishes/logout">Log Out</a>
+    </div>
+    <div class="edit wish">
+        {% if messages %}
+            <ul>    
+                {% for message in messages %}    
+                    <li>{{ message }}</li>    
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <form action="/wishes/update/{{wish.id}}" method="POST">
+            {% csrf_token %}
+            <label for="title" id="title">I wish for:</label>
+            <input type="text" id="title" name="title" value="{{wish.title}}">
+            <label for="description" id="description">Description:</label>
+            <textarea name="description" id="description" cols="30" rows="3">{{wish.description}}</textarea>
+            <button class="btn btn-outline-dark">Submit</button>
+        </form>
+            <a href="/wishes/home">Cancel</a>
+        </form>
+    </div>
+</body>
+</html>

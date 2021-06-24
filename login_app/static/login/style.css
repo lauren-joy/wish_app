@@ -1,0 +1,35 @@
+body {
+    background-image: url(https://media.istockphoto.com/photos/light-blue-paper-color-with-texture-for-background-picture-id1095286208?k=6&m=1095286208&s=170667a&w=0&h=wWBdZbQzn_zIsceTslZqy-rQSm6-Y19LC3WVSpLMkOw=);
+}
+.container{
+    padding-top: 5px;
+    padding-left: 250px;
+    
+}
+.registration {
+    color: black;
+} 
+
+.login{
+    padding-left: 60px;
+    color:black;
+}
+
+.img {
+    display: flex;
+    justify-content: flex-end;
+    width: 75%;
+}
+
+label {
+    float: left;
+    width: 100px;
+}
+
+
+
+span h1 {
+    padding-top:20px;
+    padding-left:20px;
+    padding-bottom: 100px;
+}
